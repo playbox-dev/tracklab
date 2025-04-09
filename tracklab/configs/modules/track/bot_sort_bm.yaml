@@ -2,8 +2,8 @@ _target_: tracklab.wrappers.BotSORT_bm
 
 cfg:
   # weights can be downloaded from :
-  # https://github.com/mikel-brostrom/boxmot/tree/master
-  # https://drive.google.com/uc?id=1vduhq5DpN2q1g4fYEZfPI17MJeh9qyrA
+  # "clip_duke.pt": "https://drive.google.com/uc?id=1ldjSkj-7pXAWmx8on5x0EftlCaolU4dY"
+  # place it under the pretrained_model_folder/reid/clip_duke.pt
   model_weights: ${model_dir}/reid/clip_duke.pt
   fp16: false
 
