@@ -91,9 +91,11 @@ def draw_keypoints(
     skeleton_thickness,
     print_confidence=False,
     draw_skeleton=True,
+    offset_x=0,
+    offset_y=0,
 ):
     try:
-        keypoints_xy = detection.keypoints.xy(rounded=True).astype(int)
+        keypoints_xy = detection.keypoints.xy(rounded=True).astype(int) + np.array([offset_x, offset_y])
         keypoints_c = detection.keypoints.c()
         for xy, c in zip(keypoints_xy, keypoints_c):
             if c > 0:
