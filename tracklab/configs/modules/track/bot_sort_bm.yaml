@@ -11,26 +11,26 @@ cfg:
 
   #Default
   hyperparams:
-    # per_class: False,
-    # track_high_thresh: 0.5,
-    # track_low_thresh: 0.1,
-    # new_track_thresh: 0.6,
-    track_buffer: 30,
-    # match_thresh: 0.8,
-    # proximity_thresh: 0.5,
-    # appearance_thresh: 0.25,
-    # cmc_method: ecc,
-    # frame_rate=: 0,
-    # fuse_first_associate: False,
-    # with_reid: True,
+    # per_class: False
+    # track_high_thresh: 0.5
+    # track_low_thresh: 0.1
+    # new_track_thresh: 0.6
+    track_buffer: 30
+    # match_thresh: 0.8
+    # proximity_thresh: 0.5
+    # appearance_thresh: 0.25
+    # cmc_method: ecc
+    # frame_rate=: 0
+    # fuse_first_associate: False
+    # with_reid: True
     
   # #Evolution Result
   # hyperparams:
-  #   appearance_thresh: 0.7898439993503084,
-  #   cmc_method: sof,
-  #   match_thresh: 0.3788154955940506,
-  #   new_track_thresh: 0.6170778614494122,
-  #   proximity_thresh: 0.6574832396851237,
-  #   track_buffer: 60,
-  #   track_high_thresh: 0.44526450313617855,
-  #   track_low_thresh: 0.1795066983193268,
+  #   appearance_thresh: 0.7898439993503084 
+  #   cmc_method: sof
+  #   match_thresh: 0.3788154955940506
+  #   new_track_thresh: 0.6170778614494122
+  #   proximity_thresh: 0.6574832396851237
+  #   track_buffer: 60
+  #   track_high_thresh: 0.44526450313617855
+  #   track_low_thresh: 0.1795066983193268
