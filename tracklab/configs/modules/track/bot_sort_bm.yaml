@@ -26,7 +26,7 @@ cfg:
     
   # #Evolution Result
   # hyperparams:
-  #   appearance_thresh: 0.7898439993503084 
+  #   appearance_thresh: 0.7898439993503084
   #   cmc_method: sof
   #   match_thresh: 0.3788154955940506
   #   new_track_thresh: 0.6170778614494122

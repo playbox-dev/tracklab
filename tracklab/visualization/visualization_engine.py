@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, Optional
 
 import cv2
+import av
 
 from tracklab.callbacks import Progressbar, Callback
 from tracklab.core.visualizer import Visualizer
@@ -72,25 +73,57 @@ class VisualizationEngine(Callback):
             nframes,
         ) for image_id in islice(image_metadatas.index, 0, None, nframes//total)
         ]
+        
+        # Initialize PyAV video container if saving videos
+        video_writer = None
         if self.save_videos:
             image = cv2_load_image(image_metadatas.iloc[0].file_path)
             filepath = self.save_dir / "videos" / f"{video_name}.mp4"
             filepath.parent.mkdir(parents=True, exist_ok=True)
-            video_writer = cv2.VideoWriter(
-                str(filepath),
-                cv2.VideoWriter_fourcc(*"mp4v"),
-                float(self.video_fps),
-                (image.shape[1], image.shape[0]),
-            )
+            
+            # Create PyAV container for H.264 encoding
+            container = av.open(str(filepath), mode='w')
+            stream = container.add_stream('h264', rate=self.video_fps)
+            
+            # Set resolution to 720p (1280x720)
+            stream.width = 1280
+            stream.height = 720
+            stream.pix_fmt = 'yuv420p'
+            # Set reasonable default bitrate for good quality
+            stream.bit_rate = 10000  # Increased bitrate for 720p
+            video_writer = (container, stream)
+
         with Pool() as p:
             for output_image, file_name in p.imap(process_frame, args):
                 if self.save_images:
                     filepath = self.save_dir / "images" / str(video_name) / file_name
                     filepath.parent.mkdir(parents=True, exist_ok=True)
                     assert cv2.imwrite(str(filepath), output_image)
+                
                 if self.save_videos:
-                    video_writer.write(output_image)
+                    container, stream = video_writer
+                    
+                    # Resize frame to 720p
+                    resized_image = cv2.resize(output_image, (1280, 720), interpolation=cv2.INTER_AREA)
+                    
+                    # Convert BGR (OpenCV) to RGB (PyAV)
+                    frame_rgb = cv2.cvtColor(resized_image, cv2.COLOR_BGR2RGB)
+                    
+                    # Create PyAV frame and encode
+                    frame = av.VideoFrame.from_ndarray(frame_rgb, format='rgb24')
+                    packet = stream.encode(frame)
+                    if packet:
+                        container.mux(packet)
+                
                 progress.on_module_step_end(None, "vis", None, None)
+                
+        # Flush the encoder and close the container
+        if self.save_videos:
+            container, stream = video_writer
+            # Flush remaining packets
+            for packet in stream.encode():
+                container.mux(packet)
+            container.close()
 
     def draw_frame(self, image_metadata, detections_pred, detections_gt,
                    image_pred, image_gt, nframes):
