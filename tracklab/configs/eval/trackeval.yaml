@@ -7,7 +7,7 @@ dataset_path: ${dataset.dataset_path}
 
 cfg:
   save_gt: True
-  bbox_column_for_eval: "bbox_ltwh"  # which bbox column to use for evaluation: {"bbox_ltwh", "track_bbox_kf_ltwh", ...}
+  bbox_column_for_eval: "bbox_pitch"  # which bbox column to use for evaluation: {"bbox_ltwh", "track_bbox_kf_ltwh", ...}
   metrics:  # List of performance metrics to compute as listed in "trackeval.metrics"
     - "CLEAR"
     - "HOTA"
